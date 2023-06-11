@@ -30,7 +30,7 @@ const createIntern = async function (req,res){
 
     //checking whether college already exists
     let college = await collegeModel.findOne({name:collegeName})
-    if(!college) return res.status(404).send({status: false,message: "there is no college with this name"})
+    if(!college) return res.status(400).send({status: false,message: "there is no college with this name"})
 
     //checking whether email already exists
     const isEmail = await internModel.findOne({ email: email });

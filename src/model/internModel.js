@@ -17,10 +17,7 @@ const internSchema = new mongoose.Schema({
     mobile:{
         type:String,
         required:true,
-        unique:true,
-        // validate:{
-
-        // }
+        unique:true
     },
     collegeId:{
         type:mongoose.Schema.Types.ObjectId,

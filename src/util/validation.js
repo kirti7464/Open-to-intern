@@ -21,6 +21,10 @@ const isValid = function (value) {
     }
     return MobileNum.match(/^[0-9]+$/)
   };
+  function validlogolink(logoLink){
+    const regex = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/;
+    return regex.test(logoLink)
+}
   
 
-module.exports = {isValid, isValidRequestBody, isValidEmail,isValidObjectId ,isValidMobileNum}
+module.exports = {isValid, isValidRequestBody, isValidEmail,isValidObjectId,validlogolink ,isValidMobileNum}

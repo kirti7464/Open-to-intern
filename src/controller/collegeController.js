@@ -1,7 +1,7 @@
 const collegeModel= require('../model/collegeModel')
 const internModel = require('../model/internModel')
 const validUrl = require("valid-url")
-const {isValid, isValidRequestBody, isValidEmail,isValidObjectId ,isValidMobileNum}= require("../util/validation")
+const {isValid, isValidRequestBody}= require("../util/validation")
 
 const createCollege = async function (req,res){
     try{
@@ -14,24 +14,25 @@ const createCollege = async function (req,res){
             });
         if (!name)
           return res.status(400).send({ status: false, message: "Please provide name" });
-        //format of name
-        if(!isValid(name)) return res.status(400).send({ status: false, message: "Please provide name in correct format" });
-         
         if (!fullName)
           return res.status(400).send({ status: false, message: "Please provide full name" });
-          //format of fullName
-          if(!isValid(fullName)) return res.status(400).send({ status: false, message: "Please provide fullname in correct format" });
         if (!logoLink)
           return res.status(400).send({ status: false, message: "Please provide logo" });
 
-          //valid link
+        //format of name
+        if(!isValid(name)) return res.status(400).send({ status: false, message: "Please provide name in correct format" });
+         
+        //format of fullName
+        if(!isValid(fullName)) return res.status(400).send({ status: false, message: "Please provide fullname in correct format" });
+
+        //valid link
         if(!validUrl.isWebUri(logoLink)) return res.status(400).send({ status: false, message: "Please provide valid logo link" });
+
          //findone name -unique
          let nameExist =await collegeModel.findOne(name)
          if(nameExist) return res.status(400).send({status:false,message:"This college already exists"})
            
         let data = await collegeModel.create(input);
-        // let {name,fullName,logoLink,isDeleted }=data
         return res.status(201).send({ status: true, data: data });
     }
     catch(error){
@@ -59,7 +60,7 @@ const getCollege = async function (req,res){
         let intern= await internModel.find({collegeId:data._id,isDeleted: false}).select({_id:1,name:1,email:1,mobile:1})
         restData.interns=intern
         if(intern.length==0) {
-            return res.status(200).send({status: true,data:{name:data.name,fullName:data.fullName,logoLink:data.logoLink,interns:"there is no intern in this college"}})
+            return res.status(404).send({status: false, msg:"there is no intern in this college"})
         }
         
         return res.status(200).send({status: true,data:restData})
