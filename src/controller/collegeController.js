@@ -55,12 +55,11 @@ const getCollege = async function (req,res){
         }
     
         let {_id, ...restData}=data._doc;
-        
 
         let intern= await internModel.find({collegeId:data._id,isDeleted: false}).select({_id:1,name:1,email:1,mobile:1})
         restData.interns=intern
         if(intern.length==0) {
-            return res.status(404).send({status: false, msg:"there is no intern in this college"})
+            return res.status(200).send({status: true,data:{name:data.name,fullName:data.fullName,logoLink:data.logoLink,interns:"there is no intern in this college"}})
         }
         
         return res.status(200).send({status: true,data:restData})
